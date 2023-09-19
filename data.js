@@ -3,6 +3,7 @@ const path = require('node:path');
 const fs = require('node:fs');
 const { readFile } = require('node:fs');
 const MarkdownIt = require('markdown-it');
+const axios = require('axios');
 
 const isAbsolute = (file) => {
     return path.isAbsolute(file);
@@ -63,6 +64,29 @@ if (links.length === 0){
 }
 }
 
+const linkStatus = (links) => {
+    const allLinks = links.map(link => {
+        return axios.get(link.href)
+        .then(function(response){
+            return {
+                href: link.href,
+                text: link.text,
+                file: link.file,
+                status: response.status,
+                ok: response.status >= 200 && response.status < 400 ? 'ok' : 'fail',
+            }
+        }).catch((error)=> {
+            return {
+                href: link.href,
+                text: link.text,
+                file: link.file,
+                status: error.response ? error.response.status : 'no response',
+                statusText: 'fail',
+            }
+        })
+        })
+        return Promise.resolve(allLinks);
+}
 
 module.exports = {
 isAbsolute,
@@ -71,6 +95,7 @@ existingPaths,
 isMarkdown,
 readContent,
 extractLinks,
+linkStatus,
 };
 
 
