@@ -30,12 +30,12 @@ function mdLinks (file, validate) {
 }
 
 
-mdLinks(file, true)
-.then(result => {
-   console.log(result);
-  })
-  .catch(error => {
-    console.log(error);
-  });
+// mdLinks(file, false)
+// .then(result => {
+//    console.log(result);
+//   })
+//   .catch(error => {
+//     console.log(error);
+//   });
 
   module.exports = { mdLinks };
