@@ -19,7 +19,7 @@ describe('mdLinks', () => {
   });
   it('Debería resolver un arreglo con tres objetos', (done) => {
     const file = '/Users/andreacabrera/proyecto4/DEV009-md-links/links.md';
-    mdLinks(file).then((response) => {
+    mdLinks(file, false).then((response) => {
       expect(response.length).toBe(3);
       done();
     })

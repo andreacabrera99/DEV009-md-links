@@ -75,17 +75,17 @@ const linkStatus = (links) => {
                 status: response.status,
                 ok: response.status >= 200 && response.status < 400 ? 'ok' : 'fail',
             }
-        }).catch((error)=> {
+        }).catch(function(error) {
             return {
                 href: link.href,
                 text: link.text,
                 file: link.file,
-                status: error.response ? error.response.status : 'no response',
-                statusText: 'fail',
+                status: error.response.status,
+                ok: 'fail',
             }
         })
         })
-        return Promise.resolve(allLinks);
+        return Promise.all(allLinks);
 }
 
 module.exports = {

@@ -1,4 +1,5 @@
-const { isAbsolute, absolutePaths, existingPaths, isMarkdown, readContent, extractLinks } = require('../data.js');
+const { isAbsolute, absolutePaths, existingPaths, isMarkdown, readContent, extractLinks, linkStatus, } = require('../data.js');
+const axios = require('axios');
 
 describe('isAbsolute', () => {
     test('Debería validar una ruta absoluta correctamente', () => {
@@ -85,4 +86,71 @@ describe('extractLinks', () => {
             done();
         })
     })
+})
+
+jest.mock('axios');
+
+describe('linkStatus', () => {
+    test('Debería resolver un arreglo con el status de los links', () => {
+        const links = [
+            {
+              href: 'https://es.wikipedia.org/wiki/Empanada',
+              text: 'Empanadas',
+              file: '/Users/andreacabrera/proyecto4/DEV009-md-links/links.md'
+            },
+            {
+              href: 'https://es.wikipedia.org/wiki/Taco',
+              text: 'Tacos de Canasta',
+              file: '/Users/andreacabrera/proyecto4/DEV009-md-links/links.md'
+            },
+            {
+              href: 'https://es.wikipedia.org/wiki/Feijoada',
+              text: 'Feijoada',
+              file: '/Users/andreacabrera/proyecto4/DEV009-md-links/links.md'
+            }
+          ]
+        axios.get.mockResolvedValue({status: 200})
+        return expect(linkStatus(links)).resolves.toEqual([
+            {
+              href: 'https://es.wikipedia.org/wiki/Empanada',
+              text: 'Empanadas',
+              file: '/Users/andreacabrera/proyecto4/DEV009-md-links/links.md',
+              status: 200,
+              ok: 'ok'
+            },
+            {
+              href: 'https://es.wikipedia.org/wiki/Taco',
+              text: 'Tacos de Canasta',
+              file: '/Users/andreacabrera/proyecto4/DEV009-md-links/links.md',
+              status: 200,
+              ok: 'ok'
+            },
+            {
+              href: 'https://es.wikipedia.org/wiki/Feijoada',
+              text: 'Feijoada',
+              file: '/Users/andreacabrera/proyecto4/DEV009-md-links/links.md',
+              status: 200,
+              ok: 'ok'
+            }
+          ]);
+    });
+    test('Debería rechazar el status de los links dentro de un arreglo', () => {
+      const links = [
+        {
+          href: 'https://www.tumblr.com/hola',
+          text: 'Tumblr',
+          file: '/Users/andreacabrera/proyecto4/DEV009-md-links/broken-links.md'
+        }
+      ]
+      axios.get.mockRejectedValue({response: {status: 404}})
+      return expect(linkStatus(links)).rejects.toEqual([
+        {
+          href: 'https://www.tumblr.com/hola',
+          text: 'Google',
+          file: '/Users/andreacabrera/proyecto4/DEV009-md-links/broken-links.md',
+          status: 404,
+          ok: 'fail'
+        }
+      ]);
+    });
 })

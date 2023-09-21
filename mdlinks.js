@@ -1,7 +1,7 @@
 // función principal promesa mdlinks
 
 const { isAbsolute, absolutePaths, existingPaths,isMarkdown,readContent, extractLinks, linkStatus } = require('./data.js');
-let file = 'links.md';
+let file = 'broken-links.md';
 
 function mdLinks (file, validate) {
     return new Promise ((resolve, reject) => {
@@ -12,12 +12,13 @@ function mdLinks (file, validate) {
       if(existingPaths(file)){
         if(isMarkdown(file)){
           readContent(file).then((content) => {
-            const links = extractLinks(file, content);
-            if(validate){
-              resolve(linkStatus(links));
-            } else{
-              resolve(links);
-            }
+            extractLinks(file, content).then(links => {
+              if(validate){
+                resolve(linkStatus(links));
+              } else{
+                resolve(links);
+              }
+            })
           })
         } else {
           reject('Error: el archivo no es markdown');
@@ -29,7 +30,7 @@ function mdLinks (file, validate) {
 }
 
 
-mdLinks(file, false)
+mdLinks(file, true)
 .then(result => {
    console.log(result);
   })
