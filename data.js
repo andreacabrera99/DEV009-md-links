@@ -75,8 +75,9 @@ const linkStatus = (links) => {
                 status: response.status,
                 ok: response.status >= 200 && response.status < 400 ? 'ok' : 'fail',
             }
-        }).catch(function(error) {
-            return {
+        })
+        .catch(function(error) {
+             return {
                 href: link.href,
                 text: link.text,
                 file: link.file,

@@ -134,7 +134,7 @@ describe('linkStatus', () => {
             }
           ]);
     });
-    test('Debería rechazar el status de los links dentro de un arreglo', () => {
+    test('Debería resolver el status de los links con error dentro de un arreglo', () => {
       const links = [
         {
           href: 'https://www.tumblr.com/hola',
@@ -142,11 +142,11 @@ describe('linkStatus', () => {
           file: '/Users/andreacabrera/proyecto4/DEV009-md-links/broken-links.md'
         }
       ]
-      axios.get.mockRejectedValue({response: {status: 404}})
-      return expect(linkStatus(links)).rejects.toEqual([
+      axios.get.mockRejectedValue({response:{status: 404}})
+      return expect(linkStatus(links)).resolves.toEqual([
         {
           href: 'https://www.tumblr.com/hola',
-          text: 'Google',
+          text: 'Tumblr',
           file: '/Users/andreacabrera/proyecto4/DEV009-md-links/broken-links.md',
           status: 404,
           ok: 'fail'
