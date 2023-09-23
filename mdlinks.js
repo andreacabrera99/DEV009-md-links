@@ -1,7 +1,7 @@
 // función principal promesa mdlinks
 
-const { isAbsolute, absolutePaths, existingPaths,isMarkdown,readContent, extractLinks, linkStatus } = require('./data.js');
-let file = 'broken-links.md';
+const { isAbsolute, absolutePaths, existingPaths,isDirectory, isMarkdown,readContent, extractLinks, linkStatus, readDirectory } = require('./data.js');
+let file = 'md/FAQ.md';
 
 function mdLinks (file, validate) {
     return new Promise ((resolve, reject) => {
@@ -30,12 +30,12 @@ function mdLinks (file, validate) {
 }
 
 
-// mdLinks(file, false)
-// .then(result => {
-//    console.log(result);
-//   })
-//   .catch(error => {
-//     console.log(error);
-//   });
+mdLinks(file, true)
+.then(result => {
+   console.log(result);
+  })
+  .catch(error => {
+    console.log(error);
+  });
 
   module.exports = { mdLinks };
