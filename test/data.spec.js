@@ -1,5 +1,6 @@
 const { isAbsolute, absolutePaths, existingPaths, isMarkdown, readContent, extractLinks, linkStatus, } = require('../data.js');
 const axios = require('axios');
+jest.mock('axios');
 
 describe('isAbsolute', () => {
     test('Debería validar una ruta absoluta correctamente', () => {
@@ -85,10 +86,8 @@ describe('extractLinks', () => {
             expect(response).toBe('No hay links en este archivo');
             done();
         })
-    })
+    });
 })
-
-jest.mock('axios');
 
 describe('linkStatus', () => {
     test('Debería resolver un arreglo con el status de los links', () => {
@@ -109,7 +108,7 @@ describe('linkStatus', () => {
               file: '/Users/andreacabrera/proyecto4/DEV009-md-links/links.md'
             }
           ]
-        axios.get.mockResolvedValue({status: 200})
+        jest.spyOn(axios, 'get').mockResolvedValue({status: 200})
         return expect(linkStatus(links)).resolves.toEqual([
             {
               href: 'https://es.wikipedia.org/wiki/Empanada',
@@ -142,7 +141,7 @@ describe('linkStatus', () => {
           file: '/Users/andreacabrera/proyecto4/DEV009-md-links/broken-links.md'
         }
       ]
-      axios.get.mockRejectedValue({response:{status: 404}})
+      jest.spyOn(axios, 'get').mockRejectedValue({response:{status: 404}})
       return expect(linkStatus(links)).resolves.toEqual([
         {
           href: 'https://www.tumblr.com/hola',

@@ -17,6 +17,11 @@ const existingPaths = (file) => {
     return fs.existsSync(file);
 }
 
+const isDirectory = (file) =>{
+    const stats = fs.statSync(file);
+    return stats.isDirectory(file);
+}
+
 const isMarkdown = (file) => {
     const extname = path.extname(file);
     return extname === '.md';
@@ -89,14 +94,41 @@ const linkStatus = (links) => {
         return Promise.all(allLinks);
 }
 
+const readDirectory = (file) => {
+    const readingDirectory = fs.readdirSync(file);
+    return readingDirectory.filter(fileBasename => isMarkdown(fileBasename)).map(fileBasename => path.join(file, fileBasename));
+}
+const resultado = readDirectory('md');
+console.log(resultado);
+
+// const directorio = readDirectory('/Users/andreacabrera/proyecto4/DEV009-md-links/md').forEach(file => {
+//     if(isMarkdown(file)){
+//         console.log(file);
+//     }
+// });
+
+// const unitedPaths = (mdFiles) => {
+//     return mdFiles.map(filePath => {
+//         return path.format({
+//             dir: readDirectory.dir,
+//             base: path.basename(filePath),
+//         });
+//     })
+// }
+// const markdownFiles = readDirectory('md');
+// const result = unitedPaths(markdownFiles);
+// console.log(result);
+
 module.exports = {
 isAbsolute,
 absolutePaths,
 existingPaths,
+isDirectory,
 isMarkdown,
 readContent,
 extractLinks,
 linkStatus,
+readDirectory,
 };
 
 
