@@ -1,16 +1,25 @@
 // función principal promesa mdlinks
 
 const { isAbsolute, absolutePaths, existingPaths,isDirectory, isMarkdown,readContent, extractLinks, linkStatus, readDirectory } = require('./data.js');
-let file = 'md/FAQ.md';
+let file = 'md';
 
 function mdLinks (file, validate) {
     return new Promise ((resolve, reject) => {
-      
       if(!isAbsolute(file)){
         file = absolutePaths(file);
       }
       if(existingPaths(file)){
-        if(isMarkdown(file)){
+        if(isDirectory(file)){
+            readContent(readDirectory(file)).then((content) => {
+            extractLinks(file, content).then(links => {
+              if(validate){
+                resolve(linkStatus(links));
+              } else{
+                resolve(links);
+              }
+            })
+            })
+        } else if(isMarkdown(file)){
           readContent(file).then((content) => {
             extractLinks(file, content).then(links => {
               if(validate){
@@ -30,7 +39,8 @@ function mdLinks (file, validate) {
 }
 
 
-mdLinks(file, true)
+
+mdLinks(file, false)
 .then(result => {
    console.log(result);
   })

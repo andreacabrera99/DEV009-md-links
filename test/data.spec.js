@@ -1,4 +1,4 @@
-const { isAbsolute, absolutePaths, existingPaths, isMarkdown, readContent, extractLinks, linkStatus, } = require('../data.js');
+const { isAbsolute, absolutePaths, existingPaths, isMarkdown, readContent, extractLinks, linkStatus, isDirectory,readDirectory, } = require('../data.js');
 const axios = require('axios');
 jest.mock('axios');
 
@@ -29,6 +29,17 @@ describe('existingPaths', () => {
         const file = '/Users/andreacabrera/proyecto4/DEV009-md-links/index.md';
         expect(existingPaths(file)).toBe(false);
     });
+})
+
+describe('isDirectory', () => {
+  test('Debería comprobar que la ruta pertenece a un directorio', () => {
+    const file = '/Users/andreacabrera/proyecto4/DEV009-md-links/md';
+    expect(isDirectory(file)).toBe(true);
+  });
+  test('Debería comprobar que la ruta no pertenece a un directorio', () => {
+    const file = '/Users/andreacabrera/proyecto4/DEV009-md-links/data.js';
+    expect(isDirectory(file)).toBe(false);
+  });
 })
 
 describe('isMarkdown', () => {
@@ -152,4 +163,11 @@ describe('linkStatus', () => {
         }
       ]);
     });
+})
+
+describe('readDirectory', () => {
+  test('Debería devolver un string con la ruta de los archivos md dentro de una carpeta', () => {
+    const file = 'md';
+    expect(readDirectory(file)).toEqual('md/FAQ.md');
+  })
 })
