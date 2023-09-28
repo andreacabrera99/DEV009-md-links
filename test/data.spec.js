@@ -166,8 +166,8 @@ describe('linkStatus', () => {
 })
 
 describe('readDirectory', () => {
-  test('Debería devolver un string con la ruta de los archivos md dentro de una carpeta', () => {
+  test('Debería devolver un arreglo con la ruta de los archivos md dentro de una carpeta', () => {
     const file = 'md';
-    expect(readDirectory(file)).toEqual('md/FAQ.md');
+    expect(readDirectory(file)).toEqual([ 'md/FAQ.md', 'md/extra.md' ]);
   })
 })
