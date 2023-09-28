@@ -91,15 +91,41 @@ const linkStatus = (links) => {
             }
         })
         })
+        
         return Promise.all(allLinks);
 }
 
-const readDirectory = (file) => {
+const readDirectory = (file) => { 
     const readingDirectory = fs.readdirSync(file);
-    return readingDirectory.filter(fileBasename => isMarkdown(fileBasename)).map(fileBasename => path.join(file, fileBasename)).toString();
+    return readingDirectory.filter(fileBasename => isMarkdown(fileBasename)).map(fileBasename => path.join(file, fileBasename));
 }
 
-console.log(readDirectory('md'));
+const traverseDirectory = (dir) => {
+    return new Promise((resolve) => {
+        const files = readDirectory(dir);
+        const arrayOfFiles = [];
+        const count = files.length-1;
+        let index = 0;
+
+        const iterator = file => {
+            readContent(file).then((content) => {
+                extractLinks(file, content)
+                .then(links => { 
+                    arrayOfFiles.push(links);
+                }).finally( () => {
+                    index++;
+                    if(index <= count){
+                        iterator(files[index]);
+                    } else {
+                        resolve(arrayOfFiles.flat());
+                    }
+                })
+
+              });
+        }
+        iterator(files[index]);
+    })
+}
 
 module.exports = {
 isAbsolute,
@@ -111,6 +137,7 @@ readContent,
 extractLinks,
 linkStatus,
 readDirectory,
+traverseDirectory,
 };
 
 
