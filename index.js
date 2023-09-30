@@ -1,11 +1,25 @@
+#!/usr/bin/env node
+
 // resolver la promesa e imprimirla en consola
-const { mdLinks }= require('./mdlinks.js');
+const { statsLinks, statsValidate } = require('./data.js');
+const { mdLinks } = require('./mdlinks.js');
 
-let file = 'md';
+const file = process.argv[2];
+const argv = process.argv;
+const stats = argv.includes('--stats');
+const validate = argv.includes('--validate');
 
-mdLinks(file, false).then(result => {
-   console.log(result);
-  })
+console.log(process.argv);
+
+mdLinks(file, validate).then(result => {
+  if(stats && !validate){
+    console.log(statsLinks(result));
+  } if (stats && validate){
+    console.log(statsValidate(result));
+  }else{
+    console.log(result);
+  }
+  }) 
   .catch(error => {
     console.log(error);
   });
