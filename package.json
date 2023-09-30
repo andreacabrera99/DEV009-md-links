@@ -14,13 +14,16 @@
     "markdown-it": "^13.0.1"
   },
   "description": "## Índice",
-  "main": "index.js",
+  "main": "mdlinks.js",
   "directories": {
     "doc": "docs",
     "test": "test"
   },
   "scripts": {
     "test": "jest --verbose --coverage"
+  },
+  "bin": {
+    "mdlinks": "./index.js"
   },
   "repository": {
     "type": "git",

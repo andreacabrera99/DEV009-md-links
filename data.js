@@ -95,14 +95,46 @@ const linkStatus = (links) => {
         return Promise.all(allLinks);
 }
 
+const statsLinks = (links) => {
+    const uniqueLinks = [];
+    for(let i =0; i < links.length; i++){
+    if(!uniqueLinks.includes(links[i].href)){
+        uniqueLinks.push(links[i].href);
+    } 
+    }  
+    return {
+        total: links.length, 
+        unique: uniqueLinks.length
+    }  
+}
+
+const statsValidate = (allLinks) => {
+    const countUnique = [];
+    const countBroken = [];
+    for(let i =0; i < allLinks.length; i++){
+        if(!countUnique.includes(allLinks[i].href)){
+            countUnique.push(allLinks[i].href);
+        } else if(allLinks[i].ok !== 'ok'){
+            countBroken.push(allLinks[i].ok);
+        }
+    }
+    return {
+        total: allLinks.length,
+        unique: countUnique.length,
+        broken: countBroken.length
+    }
+}
+
+// variable array vacío externo
 const readDirectory = (file) => { 
     const readingDirectory = fs.readdirSync(file);
+    // el arreglo vacío filtra archivos y si son md los pushea y si son un directorio se aplica la función readDirectory de nuevo
     return readingDirectory.filter(fileBasename => isMarkdown(fileBasename)).map(fileBasename => path.join(file, fileBasename));
 }
 
 const traverseDirectory = (dir) => {
     return new Promise((resolve) => {
-        const files = readDirectory(dir);
+        const files = readDirectory(dir); // se llama al arreglo vacío
         const arrayOfFiles = [];
         const count = files.length-1;
         let index = 0;
@@ -136,6 +168,8 @@ isMarkdown,
 readContent,
 extractLinks,
 linkStatus,
+statsLinks,
+statsValidate,
 readDirectory,
 traverseDirectory,
 };
