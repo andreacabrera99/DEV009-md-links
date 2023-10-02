@@ -4,17 +4,20 @@
 const { statsLinks, statsValidate } = require('./data.js');
 const { mdLinks } = require('./mdlinks.js');
 
-const file = process.argv[2];
 const argv = process.argv;
+const file = process.argv[2];
 const stats = argv.includes('--stats');
-const validate = argv.includes('--validate');
+const validate = argv.includes('--validate'); 
 
-console.log(process.argv);
+if(file === undefined){
+  console.log('Error: se necesita un archivo');
+  return;
+}
 
 mdLinks(file, validate).then(result => {
-  if(stats && !validate){
+   if(stats && !validate){
     console.log(statsLinks(result));
-  } if (stats && validate){
+  } else if (stats && validate){
     console.log(statsValidate(result));
   }else{
     console.log(result);
