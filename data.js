@@ -114,7 +114,7 @@ const statsValidate = (allLinks) => {
     for(let i =0; i < allLinks.length; i++){
         if(!countUnique.includes(allLinks[i].href)){
             countUnique.push(allLinks[i].href);
-        } else if(allLinks[i].ok !== 'ok'){
+        }if(allLinks[i].ok !== 'ok'){
             countBroken.push(allLinks[i].ok);
         }
     }

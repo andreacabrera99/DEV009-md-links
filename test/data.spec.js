@@ -1,4 +1,4 @@
-const { isAbsolute, absolutePaths, existingPaths, isMarkdown, readContent, extractLinks, linkStatus, isDirectory,readDirectory, } = require('../data.js');
+const { isAbsolute, absolutePaths, existingPaths, isMarkdown, readContent, extractLinks, linkStatus, isDirectory,readDirectory, statsLinks, statsValidate } = require('../data.js');
 const axios = require('axios');
 jest.mock('axios');
 
@@ -165,9 +165,63 @@ describe('linkStatus', () => {
     });
 })
 
+describe('statsLinks', () => {
+  test('Debería devolver un objeto con el número de links únicos y totales', () => {
+    const links = [
+      {
+        href: 'https://es.wikipedia.org/wiki/Empanada',
+        text: 'Empanadas',
+        file: '/Users/andreacabrera/proyecto4/DEV009-md-links/links.md'
+      },
+      {
+        href: 'https://es.wikipedia.org/wiki/Taco',
+        text: 'Tacos de Canasta',
+        file: '/Users/andreacabrera/proyecto4/DEV009-md-links/links.md'
+      },
+      {
+        href: 'https://es.wikipedia.org/wiki/Feijoada',
+        text: 'Feijoada',
+        file: '/Users/andreacabrera/proyecto4/DEV009-md-links/links.md'
+      }
+    ]
+    expect(statsLinks(links)).toEqual({ total: 3, unique: 3 });
+  });
+})
+
+describe('statsValidate', () => {
+  test('Debería devolver un objeto con el número de links únicos, totales y rotos', () => {
+    const allLinks = [
+      {
+        href: 'https://es.wikipedia.org/wiki/Empanada',
+        text: 'Empanadas',
+        file: '/Users/andreacabrera/proyecto4/DEV009-md-links/links.md',
+        status: 200,
+        ok: 'ok'
+      },
+      {
+        href: 'https://es.wikipedia.org/wiki/Taco',
+        text: 'Tacos de Canasta',
+        file: '/Users/andreacabrera/proyecto4/DEV009-md-links/links.md',
+        status: 200,
+        ok: 'ok'
+      },
+      {
+        href: 'https://es.wikipedia.org/wiki/Feijoada',
+        text: 'Feijoada',
+        file: '/Users/andreacabrera/proyecto4/DEV009-md-links/links.md',
+        status: 200,
+        ok: 'ok'
+      }
+    ]
+    expect(statsValidate(allLinks)).toEqual({ total: 3, unique: 3, broken: 0 });
+  });
+})
+
 describe('readDirectory', () => {
   test('Debería devolver un arreglo con la ruta de los archivos md dentro de una carpeta', () => {
     const file = 'md';
     expect(readDirectory(file)).toEqual([ 'md/FAQ.md', 'md/extra.md' ]);
-  })
+  });
 })
+
+describe
