@@ -125,16 +125,25 @@ const statsValidate = (allLinks) => {
     }
 }
 
-// variable array vacío externo
+const arrayOfDirectories = [];
 const readDirectory = (file) => { 
     const readingDirectory = fs.readdirSync(file);
+
+    readingDirectory.forEach((fileBasename) => {
+        const filePath = path.join(file, fileBasename);
+        if (isMarkdown(filePath)){
+            arrayOfDirectories.push(filePath);
+        } else if (isDirectory(filePath)){
+            readDirectory(filePath);
+        }
+    }); 
     // el arreglo vacío filtra archivos y si son md los pushea y si son un directorio se aplica la función readDirectory de nuevo
-    return readingDirectory.filter(fileBasename => isMarkdown(fileBasename)).map(fileBasename => path.join(file, fileBasename));
+    return arrayOfDirectories;
 }
 
-const traverseDirectory = (dir) => {
+const traverseDirectory = (arrayOfDirectories) => {
     return new Promise((resolve) => {
-        const files = readDirectory(dir); // se llama al arreglo vacío
+        const files = readDirectory(arrayOfDirectories); // se llama al arreglo vacío
         const arrayOfFiles = [];
         const count = files.length-1;
         let index = 0;
