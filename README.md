@@ -85,7 +85,7 @@ Por último, se pueden combinar las dos anteriores: `--validate --stats` y con e
 ## 7. Diagrama de flujo
 El proyecto se basa en un proceso lógico compuesto por diferentes pasos, el cual se desglosa en el siguiente diagrama de flujo. 
 
-![Diagrama de flujo](./diagrama.png)
+![Diagrama de flujo](./diagramaflujo.png)
 
 ## 8. Organización del proyecto
 Para la organización del proyecto, se utilizó el siguiente board en [Github Projects](https://github.com/users/andreacabrera99/projects/2), donde se llevó a cabo la planeación del flujo de trabajo a través de milestones y issues en torno a la división de tareas según los cinco hitos sugeridos.
