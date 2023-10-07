@@ -50,7 +50,7 @@ const extractLinks = (file, readContent) => {
                     links.push({
                         href: inlineToken.attrGet('href'),
                         text: '',
-                        file: file || absolutePaths(file),
+                        file: absolutePaths(file),
                     });
                 } else if (isInside && inlineToken.type === 'text'){
                     const lastLink = links[links.length -1];
@@ -137,7 +137,7 @@ const readDirectory = (file) => {
             readDirectory(filePath);
         }
     }); 
-    // el arreglo vacío filtra archivos y si son md los pushea y si son un directorio se aplica la función readDirectory de nuevo
+    
     return arrayOfDirectories;
 }
 

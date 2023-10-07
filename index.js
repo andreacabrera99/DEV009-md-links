@@ -10,7 +10,7 @@ const stats = argv.includes('--stats');
 const validate = argv.includes('--validate'); 
 
 if(file === undefined){
-  console.log('Error: se necesita un archivo');
+  console.error('Error: se necesita un archivo');
   return;
 }
 
