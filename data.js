@@ -125,7 +125,7 @@ const statsValidate = (allLinks) => {
     }
 }
 
-const arrayOfDirectories = [];
+let arrayOfDirectories = [];
 const readDirectory = (file) => { 
     const readingDirectory = fs.readdirSync(file);
 
@@ -141,9 +141,10 @@ const readDirectory = (file) => {
     return arrayOfDirectories;
 }
 
-const traverseDirectory = (arrayOfDirectories) => {
+const traverseDirectory = (arrayOfDirectoriesParam) => {
+    arrayOfDirectories = [];
     return new Promise((resolve) => {
-        const files = readDirectory(arrayOfDirectories); // se llama al arreglo vacío
+        const files = readDirectory(arrayOfDirectoriesParam); // se llama al arreglo vacío
         const arrayOfFiles = [];
         const count = files.length-1;
         let index = 0;
